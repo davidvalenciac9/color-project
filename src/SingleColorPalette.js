@@ -39,7 +39,7 @@ export class SingleColorPalette extends Component {
         key={color.name}
         name={color.name}
         background={color[format]}
-        showLink={false}
+        showingFullPalette={false}
       />
     ));
     return (
@@ -47,7 +47,7 @@ export class SingleColorPalette extends Component {
         <Navbar handleChange={this.changeFormat} showingAllColors={false} />
         <div className="Palette-colors">
           {colorBoxes}
-          <div className="go-back ColorBox">
+          <div className={'go-back ColorBox'}>
             <Link to={`/palette/${id}`} className="back-button">GO BACK</Link>
           </div>
         </div>
