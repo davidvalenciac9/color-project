@@ -43,7 +43,7 @@ export class Navbar extends Component {
     return (
       <header className="Navbar">
         <div className="logo">
-          <Link exact to="/">ColorPicker</Link>
+          <Link to="/">ColorPicker</Link>
         </div>
         {showingAllColors &&
           <div className="slider-container">
