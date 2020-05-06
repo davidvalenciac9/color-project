@@ -7,7 +7,7 @@ export default {
     display: 'inline-block',
     position: 'relative',
     cursor: 'pointer',
-    marginBottom: '-4px',
+    marginBottom: '-4.5px',
     '&:hover $copyButton': {
       opacity: '1',
       transition: 'all 0.3s ease-in',
