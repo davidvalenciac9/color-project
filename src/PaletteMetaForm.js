@@ -18,10 +18,12 @@ export class PaletteMetaForm extends Component {
     super (props);
 
     this.state = {
-      open: true,
+      stage: 'form',
       newPaletteName: '',
     };
     this.handleChange = this.handleChange.bind (this);
+    this.showEmojiPicker = this.showEmojiPicker.bind (this);
+    this.savePalette = this.savePalette.bind (this);
   }
 
   handleChange (evt) {
@@ -42,49 +44,78 @@ export class PaletteMetaForm extends Component {
     this.setState ({open: true});
   };
 
-  render () {
-    const {newPaletteName, open} = this.state;
-    const {hideForm, handleSubmit} = this.props;
-    return (
-      <Dialog
-        open={open}
-        onClose={hideForm}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">
-          Choose a Palette Name <span role="img" aria-label="Palette">🎨</span>
-        </DialogTitle>
-        <ValidatorForm onSubmit={() => handleSubmit (newPaletteName)}>
-          <DialogContent>
-            <DialogContentText>
-              Enter a name for the new Palette
-            </DialogContentText>
-            <Picker set="apple" />
-            <TextValidator
-              label="Palette Name"
-              name="newPaletteName"
-              value={newPaletteName}
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-              validators={['required', 'isPaletteNameUnique']}
-              errorMessages={[
-                'Enter a Palette Name',
-                'Palette Name Already in Use',
-              ]}
-            />
+  showEmojiPicker () {
+    this.setState ({
+      stage: 'emoji',
+    });
+  }
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={hideForm} color="primary">
-              Cancel
-            </Button>
-            <Button variant="contained" color="primary" type="submit">
-              Save Palette
-            </Button>
-          </DialogActions>
-        </ValidatorForm>
-      </Dialog>
+  savePalette (emoji) {
+    const newPalette = {
+      paletteName: this.state.newPaletteName,
+      emoji: emoji.native,
+    };
+    this.props.handleSubmit (newPalette);
+  }
+
+  render () {
+    const {newPaletteName} = this.state;
+    const {hideForm} = this.props;
+    return (
+      <div>
+        <Dialog open={this.state.stage === 'emoji'}>
+          <DialogTitle id="form-dialog-title">
+            Choose a Palette Emoji
+          </DialogTitle>
+          <Picker
+            emoji=""
+            title="Pick a Palette Emoji"
+            set="apple"
+            onSelect={this.savePalette}
+          />
+        </Dialog>
+        <Dialog
+          open={this.state.stage === 'form'}
+          onClose={hideForm}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">
+            Choose a Palette Name
+            {' '}
+            <span role="img" aria-label="Palette">🎨</span>
+          </DialogTitle>
+          <ValidatorForm onSubmit={this.showEmojiPicker}>
+            <DialogContent>
+              <DialogContentText>
+                Enter a name for the new Palette
+              </DialogContentText>
+
+              <TextValidator
+                label="Palette Name"
+                name="newPaletteName"
+                value={newPaletteName}
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+                validators={['required', 'isPaletteNameUnique']}
+                errorMessages={[
+                  'Enter a Palette Name',
+                  'Palette Name Already in Use',
+                ]}
+              />
+
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={hideForm} color="primary">
+                Cancel
+              </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Save Palette
+              </Button>
+            </DialogActions>
+          </ValidatorForm>
+        </Dialog>
+      </div>
     );
   }
 }
