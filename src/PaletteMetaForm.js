@@ -1,4 +1,8 @@
 import React, {Component} from 'react';
+import {Picker} from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
+
+/***Material UI imports ***/
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -38,33 +42,28 @@ export class PaletteMetaForm extends Component {
     this.setState ({open: true});
   };
 
-  handleClose = () => {
-    this.setState ({open: false});
-  };
-
   render () {
-    const {newPaletteName} = this.state;
+    const {newPaletteName, open} = this.state;
+    const {hideForm, handleSubmit} = this.props;
     return (
       <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
+        open={open}
+        onClose={hideForm}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Choose a Palette Name
+          Choose a Palette Name <span role="img" aria-label="Palette">🎨</span>
         </DialogTitle>
-        <ValidatorForm
-          onSubmit={() => this.props.handleSubmit (newPaletteName)}
-        >
+        <ValidatorForm onSubmit={() => handleSubmit (newPaletteName)}>
           <DialogContent>
             <DialogContentText>
               Enter a name for the new Palette
             </DialogContentText>
-
+            <Picker set="apple" />
             <TextValidator
               label="Palette Name"
               name="newPaletteName"
-              value={this.state.newPaletteName}
+              value={newPaletteName}
               onChange={this.handleChange}
               fullWidth
               margin="normal"
@@ -77,7 +76,7 @@ export class PaletteMetaForm extends Component {
 
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={hideForm} color="primary">
               Cancel
             </Button>
             <Button variant="contained" color="primary" type="submit">
