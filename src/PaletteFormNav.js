@@ -7,12 +7,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
 import PaletteMetaForm from './PaletteMetaForm';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+/* import ChevronRightIcon from '@material-ui/icons/ChevronRight'; */
 
 export class PaletteFormNav extends Component {
   constructor (props) {
