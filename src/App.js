@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './App.css';
 import {Route, Switch} from 'react-router-dom';
 import Palette from './Palette';
 import seedColors from './seedColors';
@@ -6,6 +7,8 @@ import PaletteList from './PaletteList';
 import SingleColorPalette from './SingleColorPalette';
 import {generatePalette} from './colorHelpers';
 import NewPaletteForm from './NewPaletteForm';
+
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 class App extends Component {
   constructor (props) {
@@ -50,53 +53,69 @@ class App extends Component {
   render () {
     const {palettes} = this.state;
     return (
-      <Switch>
-        <Route
-          exact
-          path="/palette/new/"
-          render={routeProps => (
-            <NewPaletteForm
-              {...routeProps}
-              savePalette={this.savePalette}
-              palettes={this.state.palettes}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/"
-          render={routeProps => (
-            <PaletteList
-              deletePalette={this.deletePalette}
-              {...routeProps}
-              palettes={palettes}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/palette/:id"
-          render={routeProps => (
-            <Palette
-              palette={generatePalette (
-                this.findPalette (routeProps.match.params.id)
-              )}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/palette/:paletteId/:colorId"
-          render={routeProps => (
-            <SingleColorPalette
-              colorId={routeProps.match.params.colorId}
-              palette={generatePalette (
-                this.findPalette (routeProps.match.params.paletteId)
-              )}
-            />
-          )}
-        />
-      </Switch>
+      <Route
+        render={({location}) => (
+          <TransitionGroup>
+            <CSSTransition key={location.key} classNames="fade" timeout={300}>
+              <Switch location={location}>
+                <Route
+                  exact
+                  path="/palette/new/"
+                  render={routeProps => (
+                    <div className="page">
+                      <NewPaletteForm
+                        {...routeProps}
+                        savePalette={this.savePalette}
+                        palettes={this.state.palettes}
+                      />
+                    </div>
+                  )}
+                />
+                <Route
+                  exact
+                  path="/"
+                  render={routeProps => (
+                    <div className="page">
+                      <PaletteList
+                        deletePalette={this.deletePalette}
+                        {...routeProps}
+                        palettes={palettes}
+                      />
+                    </div>
+                  )}
+                />
+                <Route
+                  exact
+                  path="/palette/:id"
+                  render={routeProps => (
+                    <div className="page">
+                      <Palette
+                        palette={generatePalette (
+                          this.findPalette (routeProps.match.params.id)
+                        )}
+                      />
+                    </div>
+                  )}
+                />
+                <Route
+                  exact
+                  path="/palette/:paletteId/:colorId"
+                  render={routeProps => (
+                    <div className="page">
+                      <SingleColorPalette
+                        colorId={routeProps.match.params.colorId}
+                        palette={generatePalette (
+                          this.findPalette (routeProps.match.params.paletteId)
+                        )}
+                      />
+                    </div>
+                  )}
+                />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
+        )}
+      />
     );
   }
 }
