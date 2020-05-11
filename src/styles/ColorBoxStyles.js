@@ -126,7 +126,7 @@ export default {
       marginBottom: '0',
       padding: '1rem',
       [sizes.down ('xs')]: {
-        fontSize: '6.5rem',
+        fontSize: '5rem',
       },
     },
     '& p': {
